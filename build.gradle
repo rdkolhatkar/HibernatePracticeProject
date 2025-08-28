@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.ratnakar.appium'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // MySQL Connector/J
+    implementation("com.mysql:mysql-connector-j:9.3.0")
+    // Hibernate Core
+    implementation("org.hibernate.orm:hibernate-core:6.6.3.Final")
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
