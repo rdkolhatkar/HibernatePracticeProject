@@ -1,7 +1,12 @@
 package com.hibernate.practice;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class StudentDetails {
     // POJO class - Plain Old Java Object
+    @Id
     private int rollNo;
     private String name;
     private String age;
