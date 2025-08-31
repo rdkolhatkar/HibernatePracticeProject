@@ -11,6 +11,15 @@ public class StudentDetails {
     private String name;
     private String age;
 
+    @Override
+    public String toString() {
+        return "StudentDetails{" +
+                "rollNo=" + rollNo +
+                ", name='" + name + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
+
     public int getRollNo() {
         return rollNo;
     }
