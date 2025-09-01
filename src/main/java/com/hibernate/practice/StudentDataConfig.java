@@ -118,5 +118,70 @@ public class StudentDataConfig {
             sessionFactory.close();
         }
     }
+    @Test
+    public void updateTheExistingDataIntoDatabase(){
+        System.out.println("Update the existing data from the Student details");
+        StudentDetails studentUpdate = new StudentDetails();
+        studentUpdate.setRollNo(1);
+        studentUpdate.setName("John Smith");
+        studentUpdate.setAge("25");
+        // Create session factory
+        SessionFactory sessionFactory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(StudentDetails.class)
+                .buildSessionFactory();
+        Session session = null;
+        try {
+            // Open session
+            session = sessionFactory.openSession();
+            // Update records in the database
+            session.merge(studentUpdate);
+            // .merge(object of Entity Class) -> This method is used for updating the existing record
+            // Start transaction
+            Transaction transaction = session.beginTransaction();
+            // Commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+            sessionFactory.close();
+        }
+    }
+    @Test
+    public void deleteTheExistingDataIntoDatabase(){
+        System.out.println("Reading Test Data from Database and Extracting the Student details");
+        // Create session factory
+        SessionFactory sessionFactory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(StudentDetails.class)
+                .buildSessionFactory();
+        Session session = null;
+        try {
+            // Open session
+            session = sessionFactory.openSession();
+            // To delete the record from DB, first we have to check if Data exists or not and that we can do with fetching the records
+            // First we fetch data and then we remove it
+            StudentDetails deleteStudentIfExists = new StudentDetails();
+            deleteStudentIfExists = session.find(StudentDetails.class, 3);
+            // Delete the record from the database
+            session.remove(deleteStudentIfExists);
+            // Start transaction
+            Transaction transaction = session.beginTransaction();
+            // Fetch data (make sure ID=3 exists in DB)
+            StudentDetails studentValues = session.find(StudentDetails.class, 3);
+            // Commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+            sessionFactory.close();
+        }
+    }
 
 }
