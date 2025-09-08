@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+
+        <!-- JDBC connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/customer_details</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">Ratanlord@1409</property>
+
+        <!-- Hibernate dialect (use MySQLDialect in Hibernate 6) -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Schema auto create & auto update -->
+        <!-- Below Property is used for creating the new table inside our schema -->
+        <!-- <property name="hibernate.hbm2ddl.auto">create</property> => To create new table -->
+        <!-- <property name="hibernate.hbm2ddl.auto">create-drop</property> -->
+         <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- SQL logging -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- If you want formatted SQL output -->
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Add your entity class mappings -->
+        <mapping class="com.hibernate.practice.CustomerDetails"/>
+    </session-factory>
+</hibernate-configuration>
