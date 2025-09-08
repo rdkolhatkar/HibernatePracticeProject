@@ -56,6 +56,7 @@ public class CustomerDataConfig {
             // Start transaction
             Transaction transaction = session.beginTransaction();
             // Persisting the appliances
+            session.persist(customerDetails);
             session.persist(customerAppliances);//The .persist() method is used to save a new object into the database.
             session.persist(customerAppliances1);
             session.persist(customerAppliances2);
