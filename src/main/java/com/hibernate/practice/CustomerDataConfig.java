@@ -43,7 +43,7 @@ public class CustomerDataConfig {
 
         // Create session factory
         SessionFactory sessionFactory = new Configuration()
-                .configure("hibernate.cfg.App.xml")
+                .configure("hibernate.cfg.app.xml")
                 .addAnnotatedClass(CustomerDetails.class) //Added CustomerDetails class
                 .addAnnotatedClass(CustomerAppliances.class) //Added CustomerAppliances class
                 .buildSessionFactory();
