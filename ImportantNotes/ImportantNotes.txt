@@ -1,0 +1,156 @@
+# 🔹 Hibernate Caching Mechanism
+
+Caching is one of the most powerful features of **Hibernate** that helps improve application performance. It reduces the number of database queries by storing frequently used data in memory, so that subsequent requests can be served faster without hitting the database again.
+
+Hibernate supports **two levels of cache** (and an optional query cache):
+
+---
+
+## 1️⃣ First-Level Cache (Session Cache)
+
+* **Scope**: Exists at the level of the `Session` object.
+* **Enabled by default**: No configuration required.
+* **Lifecycle**: Lives until the `Session` is closed.
+* **Behavior**:
+
+  * If an entity is loaded using `session.get()` or `session.load()`, Hibernate stores it in the **session cache**.
+  * If the same entity is requested again in the same session, Hibernate **returns it from cache**, without hitting the database.
+  * Any changes made to cached entities are tracked by Hibernate (dirty checking).
+
+✅ **Example:**
+
+```java
+Session session = sessionFactory.openSession();
+session.beginTransaction();
+
+// First query – hits the DB
+Employee emp1 = session.get(Employee.class, 101);
+System.out.println(emp1.getName());
+
+// Second query for same ID – served from cache
+Employee emp2 = session.get(Employee.class, 101);
+System.out.println(emp2.getName());
+
+// No SQL query will be fired again for emp2
+session.getTransaction().commit();
+session.close();
+```
+
+📝 **Output behavior**: Only one SQL `SELECT` query is fired to fetch employee `101`.
+The second retrieval is served from the **first-level cache**.
+
+---
+
+## 2️⃣ Second-Level Cache (SessionFactory Cache)
+
+* **Scope**: Exists at the `SessionFactory` level, shared across multiple sessions.
+* **Not enabled by default** – must be configured.
+* **Purpose**: Stores entities, collections, or queries beyond the lifetime of a session.
+* **Providers**: Ehcache, Infinispan, OSCache, Caffeine, Hazelcast, etc.
+
+✅ **Configuration Steps:**
+
+1. Enable second-level cache in `hibernate.cfg.xml`:
+
+   ```xml
+   <property name="hibernate.cache.use_second_level_cache">true</property>
+   <property name="hibernate.cache.region.factory_class">
+       org.hibernate.cache.ehcache.EhCacheRegionFactory
+   </property>
+   ```
+
+2. Annotate the entity class:
+
+   ```java
+   @Entity
+   @Cacheable
+   @org.hibernate.annotations.Cache(
+       usage = CacheConcurrencyStrategy.READ_WRITE
+   )
+   public class Employee {
+       @Id
+       private int id;
+       private String name;
+   }
+   ```
+
+✅ **Example Usage:**
+
+```java
+Session session1 = sessionFactory.openSession();
+Employee emp1 = session1.get(Employee.class, 101);  // Hits DB
+session1.close();
+
+Session session2 = sessionFactory.openSession();
+Employee emp2 = session2.get(Employee.class, 101);  // Served from 2nd level cache
+session2.close();
+```
+
+📝 **Output behavior**:
+
+* First session hits the database and stores the entity in the **second-level cache**.
+* Second session retrieves the same entity directly from cache without executing SQL.
+
+---
+
+## 3️⃣ Query Cache
+
+* **Scope**: Stores the **result set** of queries (not just entities).
+* **Must be explicitly enabled**.
+* Works in combination with **second-level cache** (since results depend on cached entities).
+
+✅ **Configuration:**
+
+```xml
+<property name="hibernate.cache.use_query_cache">true</property>
+```
+
+✅ **Example Usage:**
+
+```java
+Session session = sessionFactory.openSession();
+Query query = session.createQuery("from Employee where department = :dept");
+query.setParameter("dept", "IT");
+query.setCacheable(true);   // Enable caching for this query
+
+List<Employee> employees = query.list();  // Hits DB first time
+
+// Next execution with same query + parameters → served from cache
+List<Employee> employeesAgain = query.list();
+session.close();
+```
+
+📝 **Output behavior**:
+
+* First execution hits DB and caches results.
+* Second execution retrieves results from cache.
+
+---
+
+# 🔹 Cache Concurrency Strategies
+
+Hibernate provides different strategies for **second-level cache** to manage concurrent access:
+
+1. **READ\_ONLY** – For data that never changes (like reference data).
+2. **NONSTRICT\_READ\_WRITE** – Allows stale data, better performance.
+3. **READ\_WRITE** – Ensures strong consistency, uses "soft locking".
+4. **TRANSACTIONAL** – Full transactional guarantees (requires JTA).
+
+Example:
+
+```java
+@org.hibernate.annotations.Cache(
+   usage = CacheConcurrencyStrategy.READ_ONLY
+)
+```
+
+---
+
+# 🔹 Summary
+
+* **First-level cache** → Session-level, always enabled, no configuration.
+* **Second-level cache** → SessionFactory-level, optional, requires provider like Ehcache.
+* **Query cache** → Caches result sets, must be explicitly enabled.
+* **Concurrency strategies** → Define how cache handles concurrent access.
+
+---

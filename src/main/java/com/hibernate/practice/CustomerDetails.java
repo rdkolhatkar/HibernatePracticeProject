@@ -1,6 +1,7 @@
 package com.hibernate.practice;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -12,9 +13,8 @@ public class CustomerDetails {
     private int CustomerId;
     private String CustomerName;
     private String CustomerAddress;
-    @OneToMany(mappedBy = "customerDetails")
-    private List<CustomerAppliances> AppliancesPurchased;
-
+    @OneToMany(fetch = FetchType.EAGER)// EAGER Fetching means whenever we will fetch CustomerDetails entity it will also fetch all the AppliancesPurchased entities related to that particular CustomerDetails entity
+    private List<CustomerAppliances> AppliancesPurchased; // Whenever we have to use collection in Entity class Hibernate will by default use Lazy Loading / Lazy Fetching
 
     @Override
     public String toString() {
