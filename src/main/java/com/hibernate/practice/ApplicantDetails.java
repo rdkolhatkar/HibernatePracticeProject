@@ -1,8 +1,6 @@
 package com.hibernate.practice;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -13,6 +11,11 @@ public class ApplicantDetails {
     private String ApplicantName;
     private String ApplicantAddress;
     @ManyToMany
+    @JoinTable(
+            name = "applicant_jobs",
+            joinColumns = @JoinColumn(name = "applicant_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_id")
+    )
     private List<ApplicationsForJobs> appliedJobs;
 
     @Override
