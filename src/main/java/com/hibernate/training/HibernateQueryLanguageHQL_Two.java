@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class HibernateQueryLanguageHQL {
+public class HibernateQueryLanguageHQL_Two {
     // HQL (Hibernate Query Language) is an object-oriented query language similar to SQL but operates on entity objects and their properties rather than database tables and columns.
     @Test
     public void fetchDataFromApplicantDetails(){
@@ -29,6 +29,7 @@ public class HibernateQueryLanguageHQL {
         // For SQL We write "SELECT * FROM applicant_details WHERE applicant_name = 'John Doe'"
         // For HQL We write "FROM ApplicantDetails WHERE applicantName = 'John Doe'"
         // Here Query is an interface provided by Hibernate to create and execute HQL queries. It is coming from org.hibernate.query package.
+
         Query query = session.createQuery("FROM ApplicantDetails WHERE ApplicantId = 101");
         List<ApplicantDetails> applicants = query.getResultList();
         // Normal for loop
