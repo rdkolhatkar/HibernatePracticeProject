@@ -23,8 +23,17 @@
         <!-- If you want formatted SQL output -->
         <property name="hibernate.format_sql">true</property>
 
+        <!-- Enable caching -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.region.factory_class">
+            org.hibernate.cache.jcache.JCacheRegionFactory
+        </property>
+        <property name="hibernate.javax.cache.provider">
+            org.ehcache.jsr107.EhcacheCachingProvider
+        </property>
+
         <!-- Add your entity class mappings -->
         <mapping class="com.hibernate.practice.ApplicantDetails"/>
-        <mapping class="com.hibernate.practice.ApplicationsForJobs"/>
+<!--        <mapping class="com.hibernate.practice.ApplicationsForJobs"/>-->
     </session-factory>
 </hibernate-configuration>

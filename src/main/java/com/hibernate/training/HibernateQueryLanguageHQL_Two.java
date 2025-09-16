@@ -22,7 +22,7 @@ public class HibernateQueryLanguageHQL_Two {
 
         Session session = sessionFactory.openSession();
         // HQL query to fetch all records from ApplicantDetails entity
-        ApplicantDetails applicantDetails = session.get(ApplicantDetails.class, 101);
+        ApplicantDetails applicantDetails = session.get(ApplicantDetails.class, 301);
         System.out.println(applicantDetails);
         // HQL query to fetch all records from ApplicantDetails entity based on a condition
         // Here we want to fetch the record where applicantName is 'John Doe'
@@ -30,7 +30,7 @@ public class HibernateQueryLanguageHQL_Two {
         // For HQL We write "FROM ApplicantDetails WHERE applicantName = 'John Doe'"
         // Here Query is an interface provided by Hibernate to create and execute HQL queries. It is coming from org.hibernate.query package.
 
-        Query query = session.createQuery("FROM ApplicantDetails WHERE ApplicantId = 101");
+        Query query = session.createQuery("FROM ApplicantDetails WHERE applicantId = 301");
         List<ApplicantDetails> applicants = query.getResultList();
         // Normal for loop
         for(int i =0; i < applicants.size(); i++){

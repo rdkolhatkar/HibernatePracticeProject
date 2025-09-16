@@ -25,7 +25,7 @@ public class HibernateQueryLanguageHQL_One {
         String name = "John Doe";
 
         Query<ApplicantDetails> query = session.createQuery(
-                "FROM ApplicantDetails WHERE ApplicantName like ?1",
+                "FROM ApplicantDetails WHERE applicantName like ?1",
                 ApplicantDetails.class
         );
         query.setParameter(1, "%" + name + "%");

@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Cacheable // Enable second-level caching for this entity
 public class ApplicantDetails {
     @Id
-    private int ApplicantId;
-    private String ApplicantName;
-    private String ApplicantAddress;
+    private int applicantId;
+    private String applicantName;
+    private String applicantAddress;
     @ManyToMany
     @JoinTable(
             name = "applicant_jobs",
@@ -21,35 +22,35 @@ public class ApplicantDetails {
     @Override
     public String toString() {
         return "ApplicantDetails{" +
-                "ApplicantId=" + ApplicantId +
-                ", ApplicantName='" + ApplicantName + '\'' +
-                ", ApplicantAddress='" + ApplicantAddress + '\'' +
+                "applicantId=" + applicantId +
+                ", applicantName='" + applicantName + '\'' +
+                ", applicantAddress='" + applicantAddress + '\'' +
                 ", appliedJobs=" + appliedJobs +
                 '}';
     }
 
     public int getApplicantId() {
-        return ApplicantId;
+        return applicantId;
     }
 
     public void setApplicantId(int applicantId) {
-        ApplicantId = applicantId;
+        this.applicantId = applicantId;
     }
 
     public String getApplicantName() {
-        return ApplicantName;
+        return applicantName;
     }
 
     public void setApplicantName(String applicantName) {
-        ApplicantName = applicantName;
+        this.applicantName = applicantName;
     }
 
     public String getApplicantAddress() {
-        return ApplicantAddress;
+        return applicantAddress;
     }
 
     public void setApplicantAddress(String applicantAddress) {
-        ApplicantAddress = applicantAddress;
+        this.applicantAddress = applicantAddress;
     }
 
     public List<ApplicationsForJobs> getAppliedJobs() {
